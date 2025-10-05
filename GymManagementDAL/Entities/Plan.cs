@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Entities
 {
-    internal class Plan : BaseEntity
+    public class Plan : BaseEntity
     {
         [MaxLength(50)]
         [Column(TypeName = "varchar(50)")]

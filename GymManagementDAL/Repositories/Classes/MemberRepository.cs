@@ -6,12 +6,20 @@ using System.Threading.Tasks;
 using GymManagementDAL.Data;
 using GymManagementDAL.Entities;
 using GymManagementDAL.Repositories.interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace GymManagementDAL.Repositories.Classes
 {
     internal class MemberRepository : IMemberRepositories
     {
-        private readonly GymDbContext _dbContext = new GymDbContext();
+        private readonly GymDbContext _dbContext;
+
+        //private readonly GymDbContext _dbContext = new GymDbContext();
+        public MemberRepository(GymDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+       
         public int Add(Member member)
         {
             _dbContext.Add(member);

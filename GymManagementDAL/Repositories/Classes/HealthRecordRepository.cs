@@ -11,7 +11,13 @@ namespace GymManagementDAL.Repositories.Classes
 {
     internal class HealthRecordRepository : IHealthRecordRepositories
     {
-        private readonly GymDbContext _dbContext = new GymDbContext();
+        private readonly GymDbContext _dbContext;
+
+        public HealthRecordRepository(GymDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public int Add(HealthRecord H)
         {
             _dbContext.Add(H);
