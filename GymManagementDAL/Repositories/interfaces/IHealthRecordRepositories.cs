@@ -1,25 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using GymManagementDAL.Entities;
 
 namespace GymManagementDAL.Repositories.interfaces
 {
-    internal interface IMemberRepositories
+    internal interface IHealthRecordRepositories
     {
         // Get All
-        IEnumerable<Member> GetAll();
+        IEnumerable<HealthRecord> GetAll();
         // GetById
-        Member? GetById(int Id);
+        HealthRecord? GetById(int Id);
         // Add
-        int Add(Member member);
+        int Add(HealthRecord H);
         // Update
-        int Update(Member member);
+        int Update(HealthRecord H);
         // Delete
         int Delete(int Id);
-        
     }
 }
