@@ -132,7 +132,7 @@ namespace GymManagementDAL.Data
         public DbSet<Membership> Memberships { get; set; }
         public DbSet<MemberSession> MemberSessions { get; set; }
 
-
+         
     }
 }
 
