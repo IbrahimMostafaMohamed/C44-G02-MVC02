@@ -6,21 +6,20 @@ using System.Threading.Tasks;
 using GymManagementDAL.Data;
 using GymManagementDAL.Entities;
 using GymManagementDAL.Repositories.interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace GymManagementDAL.Repositories.Classes
 {
-    internal class MemberRepository : IMemberRepositories
+    internal class MembershipRepository : IMembershipRepositories
     {
+
         private readonly GymDbContext _dbContext;
 
-        //private readonly GymDbContext _dbContext = new GymDbContext();
-        public MemberRepository(GymDbContext dbContext)
+        public MembershipRepository(GymDbContext dbContext)
         {
             _dbContext = dbContext;
         }
-       
-        public int Add(Member member)
+
+        public int Add(Membership member)
         {
             _dbContext.Add(member);
             return _dbContext.SaveChanges();
@@ -28,24 +27,24 @@ namespace GymManagementDAL.Repositories.Classes
 
         public int Delete(int Id)
         {
-            var member = _dbContext.Members.Find(Id);
+            var member = _dbContext.Memberships.Find(Id);
             if (member == null)
                 return 0;
-            _dbContext.Members.Remove(member);
+            _dbContext.Memberships.Remove(member);
             return _dbContext.SaveChanges();
         }
 
-        public IEnumerable<Member> GetAll() => _dbContext.Members.ToList();
+        public IEnumerable<Membership> GetAll() => _dbContext.Memberships.ToList();
 
 
-        public Member? GetById(int Id)
+        public Membership? GetById(int Id)
         {
-            return _dbContext.Members.Find(Id);
+            return _dbContext.Memberships.Find(Id);
         }
 
-        public int Update(Member member)
+        public int Update(Membership member)
         {
-            _dbContext.Members.Update(member);
+            _dbContext.Memberships.Update(member);
             return _dbContext.SaveChanges();
         }
     }

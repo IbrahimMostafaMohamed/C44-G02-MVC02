@@ -9,16 +9,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GymManagementDAL.Data
 {
-    internal class GymDbContext : DbContext
+    public class GymDbContext : DbContext
     {
-        public GymDbContext() : base()
+        public GymDbContext(DbContextOptions<GymDbContext> options) : base(options)
         {
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=.;Database=GymManagementGroup03;Trusted_Connection=True;Encrypt=False;");
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer("Server=.;Database=GymManagementGroup03;Trusted_Connection=True;Encrypt=False;");
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -132,7 +132,7 @@ namespace GymManagementDAL.Data
         public DbSet<Membership> Memberships { get; set; }
         public DbSet<MemberSession> MemberSessions { get; set; }
 
-
+         
     }
 }
 

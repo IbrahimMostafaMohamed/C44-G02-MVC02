@@ -8,18 +8,17 @@ using GymManagementDAL.Entities;
 
 namespace GymManagementDAL.Repositories.interfaces
 {
-    internal interface IMemberRepositories
+    internal interface ICategoryRepositories
     {
         // Get All
-        IEnumerable<Member> GetAll();
+        IEnumerable<Category> GetAll();
         // GetById
-        Member? GetById(int Id);
+        Category? GetById(int Id);
         // Add
-        int Add(Member member);
+        int Add(Category c);
         // Update
-        int Update(Member member);
+        int Update(Category c);
         // Delete
         int Delete(int Id);
-        
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Entities
 {
-    internal class Membership : BaseEntity
+    public class Membership : BaseEntity
     {
         // StartDate = CreatedAt Of BaseEntity => Fluent Api
 
@@ -16,7 +16,7 @@ namespace GymManagementDAL.Entities
         {
             get
             {
-                if (EndDate >= DateTime.Now)
+                if (EndDate <= DateTime.Now)
                     return "Expired";
                 else
                     return "Active";

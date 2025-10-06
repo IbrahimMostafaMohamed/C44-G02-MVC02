@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GymManagementDAL.Entities
 {
-    internal class Session : BaseEntity
+    public class Session : BaseEntity
     {
         public string Description { get; set; } = null!;
         [Range(1, 25, ErrorMessage = "Capacity must be between 1 and 25")]

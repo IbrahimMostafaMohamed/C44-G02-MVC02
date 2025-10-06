@@ -12,7 +12,7 @@ namespace GymManagementDAL.Entities
 {
     [Index(nameof(Email), IsUnique = true)]
     [Index(nameof(Phone), IsUnique = true)]
-    internal abstract class GymUser : BaseEntity
+    public abstract class GymUser : BaseEntity
     {
         [MaxLength(50)]
         [Column(TypeName = "varchar(50)")]
@@ -32,7 +32,7 @@ namespace GymManagementDAL.Entities
         public Address Address { get; set; } = null!;
     }
     [Owned]
-    class Address
+    public class Address
     {
         public int BuildingNumber { get; set; }
         [MaxLength(30)]
