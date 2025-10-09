@@ -1,25 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using GymManagementDAL.Entities;
 
 namespace GymManagementDAL.Repositories.interfaces
 {
-    internal interface IMemberRepositories
+    public interface IGenericRepository<T> where T : BaseEntity, new()
     {
         // Get All
-        IEnumerable<Member> GetAll();
-        // GetById
-        Member? GetById(int Id);
+        IEnumerable<T> GetAll(Func<T, bool>? condition = null);
+        // Get By Id
+        T? GetById(int id);
         // Add
-        int Add(Member member);
+        void Add(T entity);
         // Update
-        int Update(Member member);
+        void Update(T entity);
         // Delete
-        int Delete(int Id);
-        
+        void Delete(int id);
+
     }
 }
