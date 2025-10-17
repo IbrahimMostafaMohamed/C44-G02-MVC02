@@ -8,7 +8,7 @@ using GymManagementDAL.Entities.Enums;
 
 namespace GymManagementBLL.ViewModels.TrainerViewModels
 {
-    internal class UpdateTrainerViewModel
+    public class UpdateTrainerViewModel
     {
         public string Name { get; set; } = null!;
         [Required(ErrorMessage = "Email Is Required")]
