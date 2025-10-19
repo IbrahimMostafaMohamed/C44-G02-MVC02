@@ -10,7 +10,7 @@ using GymManagementDAL.Repositories.interfaces;
 
 namespace GymManagementBLL.Services.Classes
 {
-    internal class TrainerrService : ITrainerrService
+    public class TrainerrService : ITrainerrService
     {
         private readonly IUnitOfWork _unitOfWork;
 

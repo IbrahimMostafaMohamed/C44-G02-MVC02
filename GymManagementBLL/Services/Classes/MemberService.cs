@@ -138,6 +138,14 @@ namespace GymManagementBLL.Services.Classes
         {
             try
             {
+                var emailExists = _unitOfWork.GetRepository<Member>()
+                     .GetAll(x=> x.Email == UpdatedMember.Email && x.Id == Id);
+
+                var phoneExists = _unitOfWork.GetRepository<Member>()
+                   .GetAll(x => x.Phone == UpdatedMember.Phone && x.Id == Id);
+
+                if(emailExists.Any() ||  phoneExists.Any()) return false;
+                
                 if (IsEmailExists(UpdatedMember.Email) || IsPhoneExists(UpdatedMember.Phone)) return false;
                 var Member = _unitOfWork.GetRepository<Member>().GetById(Id);
                 if (Member == null) return false;
@@ -162,9 +170,14 @@ namespace GymManagementBLL.Services.Classes
             var MemberRepo = _unitOfWork.GetRepository<Member>();
             var Member = MemberRepo.GetById(MemberId);
             if (Member == null) return false;
-            var HasActiveMemberSessions = _unitOfWork.GetRepository<MemberSession>()
-              .GetAll(x => x.MemberId == MemberId && x.Session.StartDate > DateTime.Now).Any();
-            if (HasActiveMemberSessions) return false;
+            
+            var SessionIds = _unitOfWork.GetRepository<MemberSession>()
+              .GetAll(x => x.MemberId == MemberId).Select(x => x.SessionId);
+
+            var HasFuturSessions = _unitOfWork.GetRepository<Session>().GetAll(
+                x => SessionIds.Contains(x.Id) && x.StartDate>DateTime.Now).Any();
+
+            if (HasFuturSessions) return false;
 
             var MemberShips = _unitOfWork.GetRepository<Membership>().GetAll(x => x.MemberId == MemberId);
             try
@@ -172,10 +185,7 @@ namespace GymManagementBLL.Services.Classes
                 if (MemberShips.Any())
                 {
                     foreach (var memberShip in MemberShips)
-                    {
-
-                        _unitOfWork.GetRepository<Membership>().Delete(memberShip.Id);
-                    }
+                        _unitOfWork.GetRepository<Membership>().Delete(memberShip.Id);                
                 }
                 MemberRepo.Delete(Member.Id);
                 return _unitOfWork.SaveChanges() > 0;
