@@ -1,0 +1,96 @@
+﻿@using GymManagementBLL.ViewModels.TrainerViewModels
+@using GymManagementDAL.Entities.Enums
+@model TrainerToUpdateViewModel
+@{
+	ViewData["Title"] = "Edit Trainer";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+	<header class="mb-4">
+		<h3 class="text-primary-color">Edit Trainer</h3>
+		<p class="text-muted">Update trainer information</p>
+	</header>
+
+	<div class="row justify-content-center">
+		<div class="col-md-8">
+			<div class="card shadow-sm border-0">
+				<div class="card-body p-4">
+					<div class="mb-4 pb-3 border-bottom">
+						<small class="text-muted d-block mb-1">Editing Profile For</small>
+						<h4 class="mb-0 text-black">Mohamed</h4>
+					</div>
+					@Html.ValidationMessage("DataMissed" , new{@class="text-danger"})
+					<form asp-action="Edit" asp-controller="Trainer" asp-route-id="@Model.Id" method="post">
+						<input type="hidden" asp-for="Id" />
+						<!-- Personal Information -->
+						<div class="section-header mb-3">
+							<h5 class="text-primary fw-bold">Personal Information</h5>
+							<hr class="mt-2">
+						</div>
+						<div class="row g-3 mb-4">
+
+
+							<div class="col-md-6">
+								<label asp-for="Email" class="form-label">Email Address</label>
+								<input asp-for="Email" type="email" class="form-control" />
+								<span asp-validation-for="Email" class="text-danger"></span>
+							</div>
+
+							<div class="col-md-6">
+								<label asp-for="Phone" class="form-label">Phone Number</label>
+								<input asp-for="Phone" type="tel" class="form-control" />
+								<span asp-validation-for="Phone" class="text-danger"></span>
+							</div>
+							<div class="col-md-6">
+								<label asp-for="BuildingNumber" class="form-label">Building Number</label>
+								<input asp-for="BuildingNumber" type="number" class="form-control" />
+								<span asp-validation-for="BuildingNumber" class="text-danger"></span>
+							</div>
+							<div class="col-md-6">
+								<label asp-for="Street" class="form-label">Street</label>
+								<input asp-for="Street" type="text" class="form-control" />
+								<span asp-validation-for="Street" class="text-danger"></span>
+							</div>
+							<div class="col-md-6">
+								<label asp-for="City" class="form-label">City</label>
+								<input asp-for="City" type="text" class="form-control" />
+								<span asp-validation-for="City" class="text-danger"></span>
+							</div>
+						</div>
+
+						<!-- Professional Information -->
+						<div class="section-header mb-3">
+							<h5 class="text-primary fw-bold">Professional Information</h5>
+							<hr class="mt-2">
+						</div>
+						<div class="row g-3">
+
+							<div class="row g-3">
+								<div class="col-12 col-md-6">
+									<label asp-for="Specialites" class="form-label"></label>
+									<select asp-for="Specialites" asp-items="Html.GetEnumSelectList<Specialties>()" class="form-select">
+										<option value="">-- Select Specialites --</option>
+									</select>
+									<span asp-validation-for="Specialites" class="text-danger"></span>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="d-flex justify-content-between mt-4 pt-3 border-top">
+							<a asp-action="Index" class="btn btn-outline">
+								<i class="bi bi-arrow-left me-1"></i>Cancel
+							</a>
+							<button type="submit" class="btn btn-fill">
+								<i class="bi bi-check-lg me-1"></i>Update Trainer
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
