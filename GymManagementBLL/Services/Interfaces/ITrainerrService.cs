@@ -13,7 +13,7 @@ namespace GymManagementBLL.Services.Interfaces
         bool CreateTrainer(CreateTrainerViewModel CreateTrainer);
         TrainerViewModel? GetTrainerDetails(int TrainerId);
         TrainerToUpdateViewModel? GetTrainerToUpdate(int TrainerId);
-        bool UpdateTrainerDetails(UpdateTrainerViewModel UdateTrainer, int TrainerId);
+        bool UpdateTrainerDetails(UpdateTrainerViewModel UpdateTrainer, int TrainerId);
         bool RemoveTrainer(int TrainerId);
 
     }

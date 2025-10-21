@@ -10,7 +10,7 @@ using GymManagementDAL.Repositories.interfaces;
 
 namespace GymManagementBLL.Services.Classes
 {
-    internal class TrainerrService : ITrainerrService
+    public class TrainerrService : ITrainerrService
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -55,7 +55,10 @@ namespace GymManagementBLL.Services.Classes
                 Name = x.Name,
                 Email = x.Email,
                 Phone = x.Phone,
-                Specialites = x.Specialties
+                Specialites = x.Specialties,
+                DateOfBirth = x.DateOfBirth,
+                Address = $"{x.Address.BuildingNumber}-{x.Address.Street}-{x.Address.City}"
+
             });
         }
 
@@ -68,7 +71,9 @@ namespace GymManagementBLL.Services.Classes
                 Email = Trainers.Email,
                 Phone = Trainers.Phone,
                 Name = Trainers.Name,
-                Specialites = Trainers.Specialties
+                Specialites = Trainers.Specialties,
+                DateOfBirth= Trainers.DateOfBirth,
+                Address = $"{Trainers.Address.BuildingNumber}-{Trainers.Address.Street}-{Trainers.Address.City}"
             };
         }
 
@@ -78,6 +83,7 @@ namespace GymManagementBLL.Services.Classes
             if (Trainers is null) return null;
             return new TrainerToUpdateViewModel
             {
+                Id = Trainers.Id,
                 Name = Trainers.Name,
                 Email = Trainers.Email,
                 Phone = Trainers.Phone,
