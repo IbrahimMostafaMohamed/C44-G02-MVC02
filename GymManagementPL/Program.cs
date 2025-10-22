@@ -31,6 +31,8 @@ namespace GymManagementPL
             builder.Services.AddScoped<IAnalyticsServices, AnalyticsServices>();
             builder.Services.AddScoped<IMemberService, MemberService>();
             builder.Services.AddScoped<ITrainerrService, TrainerrService>();
+            builder.Services.AddScoped<IPlanService, PlanService>();
+            builder.Services.AddScoped<ISessionService, SessionService>();
             var app = builder.Build();
 
             #region Data Seeding

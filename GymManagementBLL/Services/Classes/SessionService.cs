@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using GymManagementBLL.Services.Interfaces;
 using GymManagementBLL.ViewModels.SessionViewModels;
+using GymManagementBLL.ViewModels.TrainerViewModels;
 using GymManagementDAL.Entities;
 using GymManagementDAL.Repositories.interfaces;
 using GymManagementSystemBLL.ViewModels.SessionViewModels;
@@ -129,7 +130,21 @@ namespace GymManagementBLL.Services.Classes
 
         }
 
+        public IEnumerable<TrainerSelectViewModel> GetTrainersForDropdown()
+        {
+            var Trainers = _unitOfWork.GetRepository<Trainer>().GetAll();
+            //return _mapper.Map<IEnumerable<TrainerViewModel>>(Trainers);
+            return _mapper.Map<IEnumerable<TrainerSelectViewModel>>(Trainers);
+        }
+
+        public IEnumerable<CategorySelectViewModel> GetCategoryForDropdown()
+        {
+            var Categories = _unitOfWork.GetRepository<Category>().GetAll();
+            return _mapper.Map<IEnumerable<CategorySelectViewModel>>(Categories);
+        }
+
         #region Helper Methods
+
         private bool IsSessionAvilableForUpdating(Session session)
         {
             if (session == null) return false;
@@ -158,10 +173,11 @@ namespace GymManagementBLL.Services.Classes
         }
         private bool IsDateTimeValid(DateTime StartDate, DateTime EndDate)
         {
-            return StartDate < EndDate;
+            return StartDate < EndDate && DateTime.Now < StartDate;
         }
 
-        #endregion
+        
 
+        #endregion
     }
 }
