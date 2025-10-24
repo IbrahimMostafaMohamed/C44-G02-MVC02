@@ -6,11 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GymManagementDAL.Entities.Enums;
+using Microsoft.AspNetCore.Http;
 
 namespace GymManagementBLL.ViewModels.MemberViewModels
 {
     public class CreateMemberViewModel
     {
+        [Required(ErrorMessage ="Profile Photo Is Required")]
+        [Display(Name="Profile Photo")]
+        public IFormFile PhotoFile { get; set; } = null!;
         [Required (ErrorMessage = "Name Is Required")]
         [StringLength(maximumLength:50 , MinimumLength =2 , ErrorMessage ="Name Must Be Between 2 And 50 Characters")]
         [RegularExpression(@"^[a-zA-Z\s]+$")]

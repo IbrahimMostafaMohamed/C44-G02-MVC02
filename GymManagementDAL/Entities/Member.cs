@@ -9,7 +9,7 @@ namespace GymManagementDAL.Entities
     public class Member : GymUser
     {
         // JoinDate = CreatedAt Of BaseEntity => Fluent Api
-        public string? Photo { get; set; }
+        public string Photo { get; set; } = null!;
         public HealthRecord HealthRecord { get; set; } = null!;
         public ICollection<Membership> Memberships { get; set; } = new List<Membership>();
         public ICollection<MemberSession> MemberSessions { get; set; } = new List<MemberSession>();

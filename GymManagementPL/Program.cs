@@ -7,6 +7,8 @@ using GymManagementDAL.Data.DataSeed;
 using GymManagementDAL.Repositories.Classes;
 using GymManagementDAL.Repositories.interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
+using GymManagementBLL.Services.AttachmentsServices;
 namespace GymManagementPL
 {
     public class Program
@@ -33,6 +35,7 @@ namespace GymManagementPL
             builder.Services.AddScoped<ITrainerrService, TrainerrService>();
             builder.Services.AddScoped<IPlanService, PlanService>();
             builder.Services.AddScoped<ISessionService, SessionService>();
+            builder.Services.AddScoped<IAttachmentsServices, AttachmentsServices>();
             var app = builder.Build();
 
             #region Data Seeding

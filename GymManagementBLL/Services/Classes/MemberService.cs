@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GymManagementBLL.Services.AttachmentsServices;
 using GymManagementBLL.Services.Interfaces;
 using GymManagementBLL.ViewModels.MemberViewModels;
 using GymManagementDAL.Entities;
@@ -13,10 +14,12 @@ namespace GymManagementBLL.Services.Classes
     public class MemberService : IMemberService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAttachmentsServices _attachmentsServices;
 
-        public MemberService(IUnitOfWork unitOfWork)
+        public MemberService(IUnitOfWork unitOfWork, IAttachmentsServices attachmentsServices)
         {
             _unitOfWork = unitOfWork;
+            _attachmentsServices = attachmentsServices;
         }
 
         public IEnumerable<MemberViewModel> GetAllMembers()
@@ -42,6 +45,8 @@ namespace GymManagementBLL.Services.Classes
 
                 if (IsEmailExists(CreateMember.Email) || IsPhoneExists(CreateMember.Phone)) return false;
 
+                var PhotoName = _attachmentsServices.Upload("members", CreateMember.PhotoFile);
+
                 var member = new Member()
                 {
                     Name = CreateMember.Name,
@@ -61,11 +66,22 @@ namespace GymManagementBLL.Services.Classes
                         Weight = CreateMember.HealthRecordViewModel.Weight,
                         BloodType = CreateMember.HealthRecordViewModel.BloodType,
                         Notes = CreateMember.HealthRecordViewModel.Note
-                    }
+                    },
+
 
                 };
+                member.Photo = PhotoName!.ToString()!;
                 _unitOfWork.GetRepository<Member>().Add(member);
-                return _unitOfWork.SaveChanges() > 0;
+                var IsCreated = _unitOfWork.SaveChanges() > 0;
+                if (!IsCreated)
+                {
+                    _attachmentsServices.Delete("members", PhotoName.ToString()!);
+                    return false;
+                }
+                else
+                {
+                    return IsCreated;
+                }
             }
             catch (Exception)
             {
@@ -101,7 +117,7 @@ namespace GymManagementBLL.Services.Classes
                 ViewModel.PlanName = Plan?.Name;
 
             }
-            return ViewModel; 
+            return ViewModel;
         }
 
         public HealthRecordViewModel? GetMemberHealthRecordDetails(int MemberId)
@@ -139,13 +155,13 @@ namespace GymManagementBLL.Services.Classes
             try
             {
                 var emailExists = _unitOfWork.GetRepository<Member>()
-                     .GetAll(x=> x.Email == UpdatedMember.Email && x.Id == Id);
+                     .GetAll(x => x.Email == UpdatedMember.Email && x.Id == Id);
 
                 var phoneExists = _unitOfWork.GetRepository<Member>()
                    .GetAll(x => x.Phone == UpdatedMember.Phone && x.Id == Id);
 
-                if(emailExists.Any() ||  phoneExists.Any()) return false;
-                
+                if (emailExists.Any() || phoneExists.Any()) return false;
+
                 if (IsEmailExists(UpdatedMember.Email) || IsPhoneExists(UpdatedMember.Phone)) return false;
                 var Member = _unitOfWork.GetRepository<Member>().GetById(Id);
                 if (Member == null) return false;
@@ -170,12 +186,12 @@ namespace GymManagementBLL.Services.Classes
             var MemberRepo = _unitOfWork.GetRepository<Member>();
             var Member = MemberRepo.GetById(MemberId);
             if (Member == null) return false;
-            
+
             var SessionIds = _unitOfWork.GetRepository<MemberSession>()
               .GetAll(x => x.MemberId == MemberId).Select(x => x.SessionId);
 
             var HasFuturSessions = _unitOfWork.GetRepository<Session>().GetAll(
-                x => SessionIds.Contains(x.Id) && x.StartDate>DateTime.Now).Any();
+                x => SessionIds.Contains(x.Id) && x.StartDate > DateTime.Now).Any();
 
             if (HasFuturSessions) return false;
 
@@ -185,12 +201,18 @@ namespace GymManagementBLL.Services.Classes
                 if (MemberShips.Any())
                 {
                     foreach (var memberShip in MemberShips)
-                        _unitOfWork.GetRepository<Membership>().Delete(memberShip.Id);                
+                        _unitOfWork.GetRepository<Membership>().Delete(memberShip.Id);
                 }
                 MemberRepo.Delete(Member.Id);
-                return _unitOfWork.SaveChanges() > 0;
+                var IsDeleted =  _unitOfWork.SaveChanges() > 0;
+                if (IsDeleted)
+                    _attachmentsServices.Delete("members", Member.Photo);
+                return IsDeleted;
             }
-            catch { return false; }
+            catch
+            {
+                return false;
+            }
 
 
         }
