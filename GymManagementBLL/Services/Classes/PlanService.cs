@@ -106,7 +106,7 @@ namespace GymManagementBLL.Services.Classes
             var ActiveMemberShips = _unitOfWork.GetRepository<Membership>()
                         .GetAll(x => x.PlanId == PlanId && x.Status == "Active");
             return ActiveMemberShips.Any();
-
+             
         }
 
         #endregion
