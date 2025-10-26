@@ -5,11 +5,13 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using GymManagementDAL.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace GymManagementDAL.Data
 {
-    public class GymDbContext : DbContext
+    public class GymDbContext : IdentityDbContext<ApplicationUser>
     {
         public GymDbContext(DbContextOptions<GymDbContext> options) : base(options)
         {
@@ -22,6 +24,7 @@ namespace GymManagementDAL.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             modelBuilder.Entity<Trainer>()
@@ -53,7 +56,7 @@ namespace GymManagementDAL.Data
             modelBuilder.Entity<HealthRecord>().Ignore(x => x.UpdatedAt);
 
 
-            modelBuilder.Entity<Member>()   
+            modelBuilder.Entity<Member>()
                         .HasOne<HealthRecord>(M => M.HealthRecord)
                         .WithOne(H => H.Member)
                         .HasForeignKey<HealthRecord>(H => H.Id);
@@ -121,6 +124,20 @@ namespace GymManagementDAL.Data
                       .HasColumnName("BookingDate")
                       .HasDefaultValueSql("GETDATE()");
 
+            modelBuilder.Entity<ApplicationUser>(E =>
+            {
+                E.Property(x => x.FirstName)
+                .HasColumnType("varchar")
+                .HasMaxLength(50);
+
+                E.Property(x => x.LastName)
+               .HasColumnType("varchar")
+               .HasMaxLength(50);
+            }
+            );
+
+
+
         }
 
         public DbSet<Member> Members { get; set; }
@@ -132,7 +149,7 @@ namespace GymManagementDAL.Data
         public DbSet<Membership> Memberships { get; set; }
         public DbSet<MemberSession> MemberSessions { get; set; }
 
-         
+
     }
 }
 
